@@ -1,0 +1,22 @@
+﻿@page "/"
+@inject HttpClient Client
+
+
+@foreach (var item in Demos)
+{
+   <h1>@item.ClientName</h1> 
+}
+
+
+@code{
+    public IEnumerable<DemoDto> Demos { get; set; } = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        Demos = await Client.GetFromJsonAsync<IEnumerable<DemoDto>>("Demo") ?? [];
+    }
+
+
+    public record DemoDto(int Id, string ClientName, DateTimeOffset Date);
+}
+
